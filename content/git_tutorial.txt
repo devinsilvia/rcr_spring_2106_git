@@ -93,7 +93,7 @@ $ emacs not_just_a_dummy_file.txt
 (write a couple  sentences and then save  and exit  the file)
 $ git add not_just_a_dummy_file.txt
 $ git commit
-$ git log | more
+$ git log | less
 
 At this point, we can see the commits we've made and everything should
 be looking  good.  Now, let's open  up that file we  just commited and
@@ -116,7 +116,7 @@ If I'm happy with the changes, I  can go ahead and commit the modified
 file.
 
 $ git commit -a (Make sure to put a useful commit message!)
-$ git log | more
+$ git log | less
 
 OK, great, we're making and tracking changes.  What else can we do?
 
@@ -131,22 +131,13 @@ previous commit and then "checkout" the version of that code.
 $ git checkout [first 6 digits of revision number] not_just_a_dummy_file.txt
 (Note:  the first  6 digits of  the revision number are in the "git log" file)
 
-Git tells us that it updated the files to match the requested revision
-number.   Take a  look at  not_just_a_dummy_file.txt.  It  should look
-like the version you committed before you made your change.
+Git tells us that we are in a detached HEAD state, meaning that we are at a previous version of the repository, specifically the version we requested. It also provides useful information about what we can do from here. Take a look at not_just_a_dummy_file.txt. It should look like the version you committed before you made your change.
 
-It is important to  keep in mind that we have moved  to a past version
-of the code, if  we were to make a change now and  commit it, we would
-be changing that old version and the commit process would create a new
-"HEAD".  You’ll learn  more about heads as you  work with repositories
-more, but for now  let's just get back to the  most current version of
-the code:
+It is important to  keep in mind that we have moved  to a past version of the code, if  we were to make a change now and  commit it, we would be changing that old version and the commit process would create a new "HEAD" of sorts. We could then later save this code development as a new branch, if we wanted. You’ll learn more about heads as you work with repositories more, but for now let's just get back to the  most current version of the code:
 
-$ git checkout HEAD not_just_a_dummy_file.txt
+$ git checkout master
 
-Without  specifying the  revision number,  just the  word "HEAD",  git
-jumps  us right  back to  the "tip"  of the  code --  the most  recent
-version.
+By specifying "master" we jump back to the HEAD of the master branch, which is the most recent version of the code.
 
 Now, let's make  a couple more changes  to the code.  We'll  add a new
 file with some text in it and edit not_just_a_dummy_file.txt:
@@ -158,8 +149,7 @@ $ emacs not_just_a_dummy_file.txt
 (make a change or two, save, and exit)
 $ git status
 
-Now, we can  see that we added another_file.txt (marked  as "new") and
-modified not_just_a_dummy_file.txt.
+Now, we can  see that we added another_file.txt and modified not_just_a_dummy_file.txt (thought it's technically not staged for commit).
 
 Let's say we think about the state of our code for a bit and we decide
 we don't like the changes me made to not_just_a_dummy_file.txt, but we
@@ -169,12 +159,7 @@ need to "revert" the file to the state it was in at our last commit:
 $ git checkout -- not_just_a_dummy_file.txt
 $ git status
 
-Now   we   see    that   we   still   have   the    added   file   and
-not_just_a_dummy_file.txt is not longer  marked as "modified", but now
-we also  have not_just_a_dummy_file.txt~.  This extra file  is because
-git wants  to make sure we  don't accidentally revert a  file and lose
-changes that we  meant to keep. If we're happy  with the current state
-of our repo, we can go ahead and commit again:
+Now we see that we still have the added file and not_just_a_dummy_file.txt is no longer marked as "modified". If we're happy  with the current state of our repo, we can go ahead and commit again:
 
 $ git commit -a
 
@@ -185,11 +170,9 @@ dummy_file.txt.  We could try doing:
 $ rm dummy_file.txt
 $ git status
 
-Uh oh, dummy_file.txt is now marked with as "deleted".  This indicates
-that the file was deleted, but not with an git command, so it is still
-being tracked.  If we want to actually remove a file from our repo, we
-need to commit this change.
+Uh oh, dummy_file.txt is now marked with as "deleted". This indicates that the file was deleted, but not with a git command, so it is still being tracked. We need to actually properly deleted the file and then commit the change using "git rm":
 
+$ git rm dummy_file.txt
 $ git commit -a
 
 That's it for exploring what you  can do with a local repository.  The
